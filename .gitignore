@@ -1,0 +1,11 @@
+.*
+ref/
+*.txt
+*.bin
+*.rom
+*.car
+*.xex
+*.hex
+*.pgx
+*.lst
+*.lbl
