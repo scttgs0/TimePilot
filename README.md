@@ -12,4 +12,4 @@ An arcade port for ATARI XL/XE 64KB by New Generation 2018.
 
 ## Usage
 
-Assemble `timepilot.asm` with mads 2.0.6 or newer
+Assemble `timepilot.asm` with tass64
