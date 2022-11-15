@@ -1,16 +1,40 @@
 
-	org dataPlayfieldDlist
-	dta b($50),b($c7),a(bufScreenTxt)
-	dta b($45)
-adrBufScreen0 equ *+1
-	dta a(bufScreen0),b($5),b($85),b($5),b($5),b($85),b($5),b($5),b($85),b($5),b($5)
-	dta b($85),b($10)
-	dta b($4d),a(bufProgressBar),b($d),b($d),b($d),b($d),b($d),b($d),b($d)
-	dta b($41),a(dataPlayfieldDlist)
-	
-	org dataPlayfieldDlist2		; titleScreen transition
-	dta b($50),b($45)
-	dta a(bufScreen0)
-	dta b($5),b($5),b($5),b($5),b($5),b($5),b($5),b($5),b($5),b($5),b($5),b($5),b($5),b($10)
-	dta b($41),a(dataPlayfieldDlist2)
-	
+;--------------------------------------
+;--------------------------------------
+                * = dataPlayfieldDlist
+;--------------------------------------
+
+                .byte $50,$C7
+                    .word bufScreenTxt
+                .byte $45
+
+adrBufScreen0   = *+1
+                    .word bufScreen0
+                .byte $05
+                .byte $85,$05,$05
+                .byte $85,$05,$05
+                .byte $85,$05,$05
+                .byte $85,$10
+                .byte $4D
+                    .word bufProgressBar
+                .byte $0D,$0D,$0D
+                .byte $0D,$0D,$0D
+                .byte $0D
+                .byte $41
+                    .word dataPlayfieldDlist
+
+
+;--------------------------------------
+;--------------------------------------
+                * = dataPlayfieldDlist2        ; titleScreen transition
+;--------------------------------------
+
+                .byte $50,$45
+                    .word bufScreen0
+                .byte $05,$05,$05
+                .byte $05,$05,$05
+                .byte $05,$05,$05
+                .byte $05,$05,$05
+                .byte $05,$10
+                .byte $41
+                    .word dataPlayfieldDlist2

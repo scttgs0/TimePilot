@@ -1,16 +1,49 @@
 
-	org dataTitleScreenDlist
-	
-	dta b($50),b($c7),a(bufScreenTxt),b($70),b($70)
-	dta b($45),a(bufScreen0+80),b($85),b($70),b($70),b($70),b($70),b($70),b($47),a(bufScreenTxt+20),b($70),b($70),b($87),b($70),b($70),b($70),b($70),b($70),b($47),a(bufScreenTxt+7*20),b($30),b($7)
-	dta b($41),a(dataTitleScreenDlist)
-	
-	org dataTitleScreenDlist2
-	
-	dta b($50),b($c7),a(bufScreenTxt),b($70),b($70)
-	dta b($45),a(bufScreen0+80),b($85),b($70),b($70),b($c7),a(bufScreenTxt+20),b($70),b($20),b($87),b($70),b($20),b($87),b($70),b($20),b($87),b($70),b($20),b($87),b($70),b($20),b($7)
-	dta b($41),a(dataTitleScreenDlist2)
-	
-fakeDlist
-	dta b($f0)
-	dta b($41),a(fakeDlist)	
+;--------------------------------------
+;--------------------------------------
+                * = dataTitleScreenDlist
+;--------------------------------------
+
+                .byte $50,$C7
+                    .word bufScreenTxt
+                .byte $70,$70
+                .byte $45
+                    .word bufScreen0+80
+                .byte $85,$70,$70
+                .byte $70,$70,$70
+                .byte $47
+                    .word bufScreenTxt+20
+                .byte $70,$70,$87
+                .byte $70,$70,$70
+                .byte $70,$70
+                .byte $47
+                    .word bufScreenTxt+7*20
+                .byte $30,$07
+                .byte $41
+                    .word dataTitleScreenDlist
+
+
+;--------------------------------------
+;--------------------------------------
+                * = dataTitleScreenDlist2
+;--------------------------------------
+
+                .byte $50,$C7
+                    .word bufScreenTxt
+                .byte $70,$70
+                .byte $45
+                    .word bufScreen0+80
+                .byte $85,$70,$70
+                .byte $C7
+                    .word bufScreenTxt+20
+                .byte $70,$20,$87
+                .byte $70,$20,$87
+                .byte $70,$20,$87
+                .byte $70,$20,$87
+                .byte $70,$20,$07
+                .byte $41
+                    .word dataTitleScreenDlist2
+
+fakeDlist       .byte $f0
+                .byte $41
+                    .word fakeDlist
