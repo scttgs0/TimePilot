@@ -1,69 +1,64 @@
 
 ;hardware
 
-KEY_ESC   equ $1c
+KEY_ESC         = $1c
 
-trig0	  equ $d010 ; joy0 fire 
+trig0           = $d010 ; joy0 fire
+colpm0          = $d012 ; 704
+colpm1          = $d013
+colpm2          = $d014
+colpm3          = $d015
+colpf0          = $d016 ; 708
+colpf1          = $d017
+colpf2          = $d018
+colpf3          = $d019
+colbak          = $d01a
+gtiactl         = $d01b
+consol          = $d01f
 
-colpm0	  equ $d012 ; 704
-colpm1    equ $d013
-colpm2    equ $d014
-colpm3    equ $d015
+audc1           = $d201
+audc2           = $d203
+audc3           = $d205
+audc4           = $d207
+kbcode          = $d209
+random          = $d20a
+irqen           = $d20e
+irqst           = $d20e
+skstat          = $d20f
 
-colpf0    equ $d016 ; 708
-colpf1    equ $d017 
-colpf2    equ $d018
-colpf3    equ $d019
-colbak    equ $d01a
-gtiactl   equ $d01b
+porta           = $d300
+portb           = $d301
 
-consol 	  equ $d01f 
-
-audc1	  equ $d201
-audc2	  equ $d203
-audc3	  equ $d205
-audc4	  equ $d207
-
-kbcode    equ $d209
-random    equ $d20a
-irqen     equ $d20e
-irqst     equ $d20e
-skstat    equ $d20f
-
-porta     equ $d300
-portb     equ $d301
-
-dmactl    equ $d400
-dlptr     equ $d402
-vcount    equ $d40b
-nmien     equ $d40e
-nmist     equ $d40f
-wsync     equ $d40a
+dmactl          = $d400
+dlptr           = $d402
+vcount          = $d40b
+nmien           = $d40e
+nmist           = $d40f
+wsync           = $d40a
 
 ;solo
 ; SCROLLS
-hscrol equ $d404
+hscrol          = $d404
 ; FONTS
-chbase equ $d409
+chbase          = $d409
 ; P/M
-pmbase equ 54279
-pmactive equ 53277
-sizep0 equ 53256
-sizep1  equ 53257
-sizep2 equ 53258
-sizep3 equ 53259
-sizem equ 53260
-hposp0 equ 53248
-hposp1 equ 53249
-hposp2 equ 53250
-hposp3 equ 53251
-hposm0 equ 53252
-hposm1 equ 53253
-hposm2 equ 53254
-hposm3 equ 53255
-kolm0p equ $d008
-kolm1p equ $d009
-kolm2p equ $d00a
-kolm3p equ $d00b
-hitclr equ $d01e
-
+pmbase          = 54279
+pmactive        = 53277
+sizep0          = 53256
+sizep1          = 53257
+sizep2          = 53258
+sizep3          = 53259
+sizem           = 53260
+hposp0          = 53248
+hposp1          = 53249
+hposp2          = 53250
+hposp3          = 53251
+hposm0          = 53252
+hposm1          = 53253
+hposm2          = 53254
+hposm3          = 53255
+kolm0p          = $d008
+kolm1p          = $d009
+kolm2p          = $d00a
+kolm3p          = $d00b
+hitclr          = $d01e
