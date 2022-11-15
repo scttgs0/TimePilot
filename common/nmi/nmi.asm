@@ -1,93 +1,137 @@
+
 ; NMI + few procedures
-; this block of code MAY not be longer than $ad60-$adde 
+; this block of code MAY not be longer than $ad60-$adde
 
-	org 	nmiHandler
+;--------------------------------------
+;--------------------------------------
+                * = nmiHandler
+;--------------------------------------
 
-.proc	NMI
-		bit nmist ; what interruption VBL or DLI ? 
-	 	bpl no
-DLI		jmp dull
-no		sta nmist
-VBL		jmp dull
+;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+; Non-Maskable Interrupt Handler
+;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+NMI             .proc
+                bit nmist               ; what interruption VBL or DLI ?
+                bpl no
 
-dull	rti
-.endp
+DLI             jmp dull
+
+no              sta nmist
+VBL             jmp dull
+
+dull            rti
+                .endproc
 
 
 ; .align $100
 ; warning: it MAY NOT cross page boundary (example $31f8 ->$3208)
-; it is included at ~$ad60 	
+; it is included at ~$ad60
 bufDLIJumps
-	dta a(DLI0)
-	dta a(DLI1)
-	dta a(DLI2)
-	dta a(DLI3)
-	dta a(DLI4)
-bufDLIJumpsLevelStart
-	dta a(DLI0)
-	dta a(DLI1b)
-	dta a(DLI2)
-	dta a(DLI3b)
-	dta a(DLI4b)
-bufDLIJumpsGameOver
-	dta a(DLI0)
-	dta a(DLI1c)
-	dta a(DLI2)
-	dta a(DLI3b)
-	dta a(DLI4b)
+                .word DLI0
+                .word DLI1
+                .word DLI2
+                .word DLI3
+                .word DLI4
 
-.proc	enableNMI
-	lda <NMI
-	sta $fffa
-	lda >NMI
-	sta $fffb
-	lda #$c0    
-	sta nmien 
-	rts
-.endp
+bufDLIJumpsLevelStart
+                .word DLI0
+                .word DLI1b
+                .word DLI2
+                .word DLI3b
+                .word DLI4b
+
+bufDLIJumpsGameOver
+                .word DLI0
+                .word DLI1c
+                .word DLI2
+                .word DLI3b
+                .word DLI4b
+
+
+;======================================
+;
+;======================================
+enableNMI       .proc
+                lda #<NMI
+                sta $fffa
+                lda #>NMI
+                sta $fffb
+
+                lda #$c0
+                sta nmien
+                rts
+                .endproc
+
 
 ; Various waitFrame procedures
-.proc waitJoyXFrames
-	jsr waitFrameNormal
-	dex
-	beq @+
-	lda porta
-	eor #$ff
-	and #$f
-	cmp #1 	
-	beq @+
-	cmp #2
-	beq @+
-	cmp #4
-	beq @+
-	lda trig0
-	beq @+
-	bne waitJoyXFrames
-@	rts
-.endp	
 
-.proc waitXFrames ; X = how many frames to wait
-	jsr waitFrameNormal
-	dex
-	bne waitXFrames
-	rts
-.endp
 
-.proc 	waitFrame
-l1	lda vcount
-	cmp #engineWaitFrameVcount
-	bcc l1
-	rts
-.endp
+;======================================
+;
+;======================================
+waitJoyXFrames  .proc
+                jsr waitFrameNormal
 
-.proc 	waitFrameNormal
-l1	lda vcount
-	bne l1
-l2	lda vcount
-	beq l2
-	rts
-.endp
+                dex
+                beq _XIT
 
-; this block of code MAY not be longer than $ad60-$adde 
-	
-	
+                lda porta
+                eor #$ff
+                and #$f
+                cmp #1
+                beq _XIT
+
+                cmp #2
+                beq _XIT
+
+                cmp #4
+                beq _XIT
+
+                lda trig0
+                beq _XIT
+                bne waitJoyXFrames
+
+_XIT            rts
+                .endproc
+
+
+;======================================
+;--------------------------------------
+; X = how many frames to wait
+;======================================
+waitXFrames     .proc
+                jsr waitFrameNormal
+
+                dex
+                bne waitXFrames
+
+                rts
+                .endproc
+
+
+;======================================
+;
+;======================================
+waitFrame       .proc
+l1              lda vcount
+                cmp #engineWaitFrameVcount
+                bcc l1
+
+                rts
+                .endproc
+
+
+;======================================
+;
+;======================================
+waitFrameNormal .proc
+l1              lda vcount
+                bne l1
+
+l2              lda vcount
+                beq l2
+
+                rts
+                .endproc
+
+; this block of code MAY not be longer than $ad60-$adde
