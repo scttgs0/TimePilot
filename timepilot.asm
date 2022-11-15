@@ -1,74 +1,103 @@
+
 ; -----------------------------------
 ;             TIMEPILOT
-;	arcade port for Atari XL/XE 64K
-;     	   code: solo, laoo
-; 	     New Generation 2018
+;    arcade port for Atari XL/XE 64K
+;            code: solo, laoo
+;          New Generation 2018
 ;------------------------------------
 
-	icl 'loader/loadingFadeOut.asm'
-	ini $5c00
-	
-	opt c+
-	
-	icl 'loader/loadGameGraphic.asm'
-	ini $2000
-	
-	org $2000
-	
-start
-	; preinitializations
-	jsr gameInit.system
-	
-.proc 	main
-	jsr gameInit.disablePM
-	jsr prPreinitLvl1
-	jsr gameInit.settings
-	jsr titleScreen
-	jsr initPlayfield
-	jmp gameplay.loop
-.endp
-	
-	; nmi 
-	icl 'common/nmi/titleScreenNMI.asm'
-	icl 'common/nmi/playfieldNMI.asm'
+            .enc "atari-screen"
+                .cdef " Z",$00
+                .cdef "az",$61
+            .enc "none"
 
-	; commons
-	icl 'common/hardwareRegisters.asm'
-	icl 'common/config.asm'
-	icl 'common/memoryLayout.asm'
-	
-	; engine
-	icl 'engine/drawPlayer.asm'
-	icl 'engine/gameplayLoop.asm'
-	icl 'engine/playfieldRenderer/main.asm'
-	icl 'engine/levelProcedures.asm'
-	icl 'engine/gameSpawns.asm'
-	icl 'engine/objectListProcessing.asm'
-	icl 'engine/objectListTable.asm'
-	icl 'engine/hitDetect.asm'
-	icl 'engine/enemyFire.asm'
-	icl 'engine/enemyBomb.asm'
-	icl 'engine/scoreRoutines.asm'
-	icl 'engine/gameModes.asm'
 
-	; various
-	icl 'common/commonProcedures.asm'
-	icl 'common/gameInit.asm'
-	icl 'common/playfieldInit.asm'
-	icl 'common/playfieldProcessing.asm'
-	icl 'common/titleScreen.asm'
-	icl 'common/drawTo.asm'
-	icl 'common/soundSystem.asm' 
+                .include 'loader/loadingFadeOut.asm'
 
-	; ORG ins starts here
-	icl 'common/dlists/titleScreenDlist.asm'
-	icl 'common/dlists/playfieldDlist.asm'
-	icl 'common/rmt/rmtplayr.asm'
-	icl 'common/nmi/nmi.asm'
-		
-	; music/sfx	
-	opt h-
-	ins "data/music/timepilot.rmt"
-	opt h+
-	
-	run $2000
+
+;--------------------------------------
+;--------------------------------------
+                * = $02E2
+;--------------------------------------
+
+                .addr $5C00
+
+
+    ;opt c+        65816 instructions
+
+                .include 'loader/loadGameGraphic.asm'
+
+
+;--------------------------------------
+;--------------------------------------
+                * = $02E2
+;--------------------------------------
+
+                .addr $2000
+
+
+;--------------------------------------
+;--------------------------------------
+                * = $2000
+;--------------------------------------
+
+start           ; preinitializations
+                jsr gameInit.system
+
+main            .proc
+                jsr gameInit.disablePM
+                jsr prPreinitLvl1
+                jsr gameInit.settings
+                jsr titleScreen
+                jsr initPlayfield
+                jmp gameplay.loop
+                .endproc
+
+                ; nmi
+                .include 'common/nmi/titleScreenNMI.asm'
+                .include 'common/nmi/playfieldNMI.asm'
+
+                ; commons
+                .include 'common/hardwareRegisters.asm'
+                .include 'common/config.asm'
+                .include 'common/memoryLayout.asm'
+
+                ; engine
+                .include 'engine/drawPlayer.asm'
+                .include 'engine/gameplayLoop.asm'
+                .include 'engine/playfieldRenderer/main.asm'
+                .include 'engine/levelProcedures.asm'
+                .include 'engine/gameSpawns.asm'
+                .include 'engine/objectListProcessing.asm'
+                .include 'engine/objectListTable.asm'
+                .include 'engine/hitDetect.asm'
+                .include 'engine/enemyFire.asm'
+                .include 'engine/enemyBomb.asm'
+                .include 'engine/scoreRoutines.asm'
+                .include 'engine/gameModes.asm'
+
+                ; various
+                .include 'common/commonProcedures.asm'
+                .include 'common/gameInit.asm'
+                .include 'common/playfieldInit.asm'
+                .include 'common/playfieldProcessing.asm'
+                .include 'common/titleScreen.asm'
+                .include 'common/drawTo.asm'
+                .include 'common/soundSystem.asm'
+
+                ; ORG ins starts here
+                .include 'common/dlists/titleScreenDlist.asm'
+                .include 'common/dlists/playfieldDlist.asm'
+                .include 'common/rmt/rmtplayr.asm'
+                .include 'common/nmi/nmi.asm'
+
+                ; music/sfx
+                ;.binary "data/music/timepilot.rmt"
+
+
+; ;--------------------------------------
+; ;--------------------------------------
+;                 * = $02E0
+; ;--------------------------------------
+
+;                 .addr $2000
