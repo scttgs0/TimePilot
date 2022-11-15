@@ -1,74 +1,95 @@
+
 ; TIMEPILOT
 ; drawing Player
 
-.proc drawPlayer
+;======================================
+;
+;======================================
+drawPlayer      .proc
+                lda playerFrameDraw        ; 0 = we dont need to redraw player
+                bne _1
 
-	lda playerFrameDraw		; 0 = we dont need to redraw player 
-	bne @+
-	rts
-@	ldx player.currentFrame
-	dec playerFrameDraw ; 1-> 0
+                rts
 
-	;X - frame animation number 0..15
+_1              ldx player.currentFrame
+                dec playerFrameDraw ; 1-> 0
 
-	;layout offset bits meaning
-	;9876543210
-	;bbbbssffff
-	; b - byte number
-	; s - sprite number
-	; f - frame number
+                ;X - frame animation number 0..15
 
-	.macro node solo
-	lda dataSpritePlayer+$000+(:1<<6),x
-	and playerMask+:1
-	sta bufPM0+63-8+:1
-	lda dataSpritePlayer+$010+(:1<<6),x
-	and playerMask+:1
-	sta bufPM1+63-8+:1
-	lda dataSpritePlayer+$020+(:1<<6),x
-	and playerMask+16+:1
-	sta bufPM2+63-8+:1
-	lda dataSpritePlayer+$030+(:1<<6),x
-	and playerMask+16+:1
-	sta bufPM3+63-8+:1
-	.endm
+                ;layout offset bits meaning
+                ;9876543210
+                ;bbbbssffff
+                ; b - byte number
+                ; s - sprite number
+                ; f - frame number
 
-	.rept 16
-	node .R
-	.endr
-	
-	rts
-	.endp
-	
-.proc 	hidePlayer
-		lda #0
-		sta hposp0
-		sta hposp1
-		sta hposp2
-		sta hposp3
-		rts
-.endp		
 
-.proc 	hideMissiles
-		lda #0
-		sta hposm0
-		sta hposm1
-		sta hposm2
-		sta hposm3
-		rts
-.endp	
+;^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+;
+;^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+node            .macro solo
+                lda dataSpritePlayer+$000+(\1<<6),x
+                and playerMask+\1
+                sta bufPM0+63-8+\1
+                lda dataSpritePlayer+$010+(\1<<6),x
+                and playerMask+\1
+                sta bufPM1+63-8+\1
+                lda dataSpritePlayer+$020+(\1<<6),x
+                and playerMask+16+\1
+                sta bufPM2+63-8+\1
+                lda dataSpritePlayer+$030+(\1<<6),x
+                and playerMask+16+\1
+                sta bufPM3+63-8+\1
+                .endmacro
 
-.proc 	showPlayer
-		lda #120
-		sta hposp0
-		lda #120
-		sta hposp1
-		lda #128
-		sta hposp2
-		lda #128
-		sta hposp3
-		lda #1
-		sta playerFrameDraw
-		rts
-.endp	
+            .for item in range(16)
+                .node item
+            .endfor
 
+                rts
+                .endproc
+
+
+;======================================
+;
+;======================================
+hidePlayer      .proc
+                lda #0
+                sta hposp0
+                sta hposp1
+                sta hposp2
+                sta hposp3
+                rts
+                .endproc
+
+
+;======================================
+;
+;======================================
+hideMissiles    .proc
+                lda #0
+                sta hposm0
+                sta hposm1
+                sta hposm2
+                sta hposm3
+                rts
+                .endproc
+
+
+;======================================
+;
+;======================================
+showPlayer      .proc
+                lda #120
+                sta hposp0
+                lda #120
+                sta hposp1
+                lda #128
+                sta hposp2
+                lda #128
+                sta hposp3
+
+                lda #1
+                sta playerFrameDraw
+                rts
+                .endproc
